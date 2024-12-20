@@ -15,14 +15,10 @@ namespace ProductAPI.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(ProductCreateCommand command)
-        {
-            var result = await _mediator.Send(command);
-
-            return ResponseFromResult(result);
-        }
-
+        /// <summary>
+        /// Retorna todos os produtos
+        /// </summary>
+        /// <returns>Uma lista de produtos</returns>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -30,6 +26,19 @@ namespace ProductAPI.Controllers
             var result = await _mediator.Send(query);
 
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Adiciona um novo produto
+        /// </summary>
+        /// <param name="command">Os dados do produto a ser criado.</param>
+        /// <returns>Confirmação de criação de produto.</returns>
+        [HttpPost]
+        public async Task<IActionResult> Create(ProductCreateCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            return ResponseFromResult(result);
         }
 
         [HttpGet("{id:guid}")]

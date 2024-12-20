@@ -17,7 +17,31 @@ builder.Services.AddMediatR(typeof(ProductCreateHandler).Assembly);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { 
+        
+        Version = "v1",
+        Title = "Product API",
+        Description = "API to manager product, using DDD, CQRS, and SQLite",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Anderson",
+            Email = "anderson.silvait@outlook.com",
+            Url = new Uri("https://productapi.com")
+        }
+    });
+
+    // TODO
+    // Inclui comentários XML para documentação dos endpoints
+    //var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName()}.xml";
+    //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    //if(xmlPath != null)
+    //{
+    //    options.IncludeXmlComments(xmlPath);
+    //}
+});
 
 var app = builder.Build();
 
