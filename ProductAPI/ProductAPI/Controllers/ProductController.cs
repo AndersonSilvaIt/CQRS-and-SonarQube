@@ -5,9 +5,8 @@ using ProductAPI.Application.Queries;
 
 namespace ProductAPI.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class ProductController : ControllerBase
+    public class ProductController : BaseController
     {
         private readonly IMediator _mediator;
 
@@ -21,7 +20,7 @@ namespace ProductAPI.Controllers
         {
             var result = await _mediator.Send(command);
 
-            return Ok();
+            return ResponseFromResult(result);
         }
 
         [HttpGet]

@@ -1,4 +1,5 @@
 ﻿using ProductAPI.Domain.Base;
+using ProductAPI.Domain.Validators;
 using ProductAPI.Domain.ValueObjects;
 
 namespace ProductAPI.Domain.Entities
@@ -17,26 +18,23 @@ namespace ProductAPI.Domain.Entities
 
         public void SetName(string name)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("The name is required");
-
             Name = name;
+            Validate();
         }
 
-        public void UpdatePrice(Price price)
+        public void SetPrice(Price price)
         {
             if (price == null)
                 throw new ArgumentException("The price is required");
 
             Price = price;
+            Validate();
         }
 
         public void SetStock(int stock)
         {
-            if (stock <= 0)
-                throw new ArgumentException("The stock is required");
-
             Stock = stock;
+            Validate();
         }
 
         public void UpdateProduct(string name, decimal price, int stock)
@@ -44,6 +42,18 @@ namespace ProductAPI.Domain.Entities
             SetName(name);
             SetStock(stock);
             UpdateTimestamp();
+        }
+
+        private void Validate()
+        {
+            var validator = new ProductValidator();
+            var result = validator.Validate(this);
+
+            if (!result.IsValid)
+            {
+                var errors = string.Join("; ", result.Errors.Select(e => e.ErrorMessage));
+                throw new ArgumentException(errors);
+            }
         }
     }
 }
