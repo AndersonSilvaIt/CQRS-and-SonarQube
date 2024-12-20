@@ -20,8 +20,9 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { 
-        
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+
         Version = "v1",
         Title = "Product API",
         Description = "API to manager product, using DDD, CQRS, and SQLite",
@@ -35,12 +36,10 @@ builder.Services.AddSwaggerGen(options =>
 
     // TODO
     // Inclui comentários XML para documentação dos endpoints
-    //var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName()}.xml";
-    //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    //if(xmlPath != null)
-    //{
-    //    options.IncludeXmlComments(xmlPath);
-    //}
+    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+    options.IncludeXmlComments(xmlPath);
 });
 
 var app = builder.Build();

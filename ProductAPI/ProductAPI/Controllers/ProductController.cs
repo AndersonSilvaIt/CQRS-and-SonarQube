@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Application.Commands;
+using ProductAPI.Application.DTOs;
 using ProductAPI.Application.Queries;
 
 namespace ProductAPI.Controllers
@@ -18,8 +19,10 @@ namespace ProductAPI.Controllers
         /// <summary>
         /// Retorna todos os produtos
         /// </summary>
-        /// <returns>Uma lista de produtos</returns>
+        /// <returns>Retorna uma lista de produtos</returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAll()
         {
             var query = new GetAllProductsQuery();
