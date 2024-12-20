@@ -16,9 +16,11 @@ namespace ProductAPI.Infrastructure.Mappings
                 .IsRequired()
                 .HasMaxLength(200);
 
-            builder.Property(p => p.Price)
-                .HasPrecision(18, 2)
-                .IsRequired();
+            builder.OwnsOne(p => p.Price, price =>
+            {
+                price.Property(p => p.Value).HasColumnName("Value");
+                price.Property(p => p.Currency).HasColumnName("Currency");
+            });
 
             builder.Property(p => p.Stock)
                 .IsRequired();

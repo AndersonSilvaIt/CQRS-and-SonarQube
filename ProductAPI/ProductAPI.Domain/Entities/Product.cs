@@ -8,12 +8,14 @@ namespace ProductAPI.Domain.Entities
     {
         public string Name { get; private set; }
         public Price Price { get; private set; }
-        public int Stock { get; private set; }
+        public int Stock { get; set; }
+        private Product() { }
+
         public Product(string name, Price price, int stock)
         {
             SetName(name);
-            //SetPrice(price);
             SetStock(stock);
+            SetPrice(price);
         }
 
         public void SetName(string name)

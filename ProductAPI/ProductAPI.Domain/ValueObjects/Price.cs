@@ -5,12 +5,17 @@
         public decimal Value { get; private set; }
         public string Currency { get; private set; }
 
-        public Price(decimal valor, string currency)
+        private Price()
         {
-            if (valor <= 0)
+            
+        }
+
+        public Price(decimal value, string currency)
+        {
+            if (value <= 0)
                 throw new ArgumentException("Price is required");
 
-            Value = valor;
+            Value = value;
             Currency = currency ?? throw new ArgumentException(nameof(currency));
         }
     }
