@@ -1,4 +1,6 @@
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ProductAPI.Application.Handlers;
 using ProductAPI.Domain.Interfaces;
 using ProductAPI.Infrastructure.Context;
 using ProductAPI.Infrastructure.Repositories;
@@ -10,6 +12,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+builder.Services.AddMediatR(typeof(ProductCreateHandler).Assembly);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

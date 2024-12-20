@@ -11,6 +11,11 @@ namespace ProductAPI.Infrastructure.Repositories
         {
         }
 
+        public async Task<Product> GetProductByNameAsync(string name)
+        {
+            return await _dbSet.FirstOrDefaultAsync(p => p.Name.Equals(name));
+        }
+
         public async Task<IEnumerable<Product>> GetProductWithStock()
         {
             return await _dbSet.Where(p => p.Stock > 0).ToListAsync();

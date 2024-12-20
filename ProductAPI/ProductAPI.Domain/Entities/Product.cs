@@ -11,7 +11,7 @@ namespace ProductAPI.Domain.Entities
         {
             SetName(name);
             SetPrice(price);
-            Stock = stock;
+            SetStock(stock);
         }
 
         public void SetName(string name)
@@ -36,6 +36,14 @@ namespace ProductAPI.Domain.Entities
                 throw new ArgumentException("The stock is required");
 
             Stock = stock;
+        }
+
+        public void UpdateProduct(string name, decimal price, int stock)
+        {
+            SetName(name);
+            SetPrice(price);
+            Stock = stock;
+            UpdateTimestamp();
         }
     }
 }

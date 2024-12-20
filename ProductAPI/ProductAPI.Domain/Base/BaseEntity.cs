@@ -12,7 +12,7 @@
             CreatedAt = DateTime.Now;
         }
 
-        private void UpdateTimestamp()
+        protected void UpdateTimestamp()
         {
             UpdatedAt = DateTime.Now;
         }

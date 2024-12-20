@@ -5,5 +5,6 @@ namespace ProductAPI.Domain.Interfaces
     public interface IProductRepository : IRepository<Product>
     {
         Task<IEnumerable<Product>> GetProductWithStock();
+        Task<Product> GetProductByNameAsync(string name);
     }
 }
