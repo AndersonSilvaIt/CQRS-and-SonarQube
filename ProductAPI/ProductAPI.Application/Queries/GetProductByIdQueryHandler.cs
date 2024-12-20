@@ -20,13 +20,7 @@ namespace ProductAPI.Application.Queries
             if (product == null)
                 return null;
 
-            return new ProductDTO 
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Price = product.Price,
-                Stock = product.Stock
-            };
+            return ProductDTO.FromProduct(product);
         }
     }
 }

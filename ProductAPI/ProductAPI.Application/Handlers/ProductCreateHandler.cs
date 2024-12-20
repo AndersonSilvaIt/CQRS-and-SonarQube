@@ -16,7 +16,8 @@ namespace ProductAPI.Application.Handlers
 
         public async Task<bool> Handle(ProductCreateCommand request, CancellationToken cancellationToken)
         {
-            var product = new Product(request.Name, request.Price, request.Stock);
+            var preco = request.GetPrice();
+            var product = new Product(request.Name, preco, request.Stock);
 
             await _productRepository.AddAsync(product);
 

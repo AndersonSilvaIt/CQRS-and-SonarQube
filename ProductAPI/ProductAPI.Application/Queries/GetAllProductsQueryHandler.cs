@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using ProductAPI.Application.DTOs;
+using ProductAPI.Domain.Entities;
 using ProductAPI.Domain.Interfaces;
 
 namespace ProductAPI.Application.Queries
@@ -17,15 +18,8 @@ namespace ProductAPI.Application.Queries
         {
             var products = await _productRepository.GetAllAsync();
 
-
             // TODO, não carregar tudo em memória. Estudar ...
-            return products.Select(p => new ProductDTO
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Price = p.Price,
-                Stock = p.Stock
-            });
+            return products.Select(p => ProductDTO.FromProduct(p));
         }
     }
 }

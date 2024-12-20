@@ -36,8 +36,15 @@ namespace ProductAPI.Controllers
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            
+            var query = new GetProductByIdQuery(id);
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
         }
+
 
     }
 }

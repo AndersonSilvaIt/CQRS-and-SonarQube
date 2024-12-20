@@ -1,16 +1,17 @@
 ﻿using ProductAPI.Domain.Base;
+using ProductAPI.Domain.ValueObjects;
 
 namespace ProductAPI.Domain.Entities
 {
     public class Product : BaseEntity
     {
         public string Name { get; private set; }
-        public decimal Price { get; private set; }
+        public Price Price { get; private set; }
         public int Stock { get; private set; }
-        public Product(string name, decimal price, int stock)
+        public Product(string name, Price price, int stock)
         {
             SetName(name);
-            SetPrice(price);
+            //SetPrice(price);
             SetStock(stock);
         }
 
@@ -22,9 +23,9 @@ namespace ProductAPI.Domain.Entities
             Name = name;
         }
 
-        public void SetPrice(decimal price)
+        public void UpdatePrice(Price price)
         {
-            if (price <= 0)
+            if (price == null)
                 throw new ArgumentException("The price is required");
 
             Price = price;
@@ -41,8 +42,7 @@ namespace ProductAPI.Domain.Entities
         public void UpdateProduct(string name, decimal price, int stock)
         {
             SetName(name);
-            SetPrice(price);
-            Stock = stock;
+            SetStock(stock);
             UpdateTimestamp();
         }
     }
