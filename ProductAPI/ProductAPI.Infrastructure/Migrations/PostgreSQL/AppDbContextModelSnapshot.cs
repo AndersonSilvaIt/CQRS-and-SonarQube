@@ -7,7 +7,7 @@ using ProductAPI.Infrastructure.Context;
 
 #nullable disable
 
-namespace ProductAPI.Infrastructure.Migrations
+namespace ProductAPI.Infrastructure.Migrations.PostgreSQL
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot

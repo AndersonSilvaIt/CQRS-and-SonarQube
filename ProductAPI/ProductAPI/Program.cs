@@ -3,12 +3,40 @@ using Microsoft.EntityFrameworkCore;
 using ProductAPI.Application.Handlers;
 using ProductAPI.Domain.Interfaces;
 using ProductAPI.Infrastructure.Context;
+using ProductAPI.Infrastructure.Enums;
 using ProductAPI.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var databaseProviderStr = builder.Configuration.GetValue<string>("DatabaseProvider");
+
+DatabaseProviderEnum databaseProvider;
+
+if (!Enum.TryParse(databaseProviderStr, out databaseProvider))
+    throw new InvalidOperationException("Provedor de banco de dados não configurado");
+
+var connectionString = builder.Configuration.GetConnectionString(databaseProvider.GetDescription());
+if (string.IsNullOrWhiteSpace(connectionString))
+    throw new InvalidOperationException("Configuração de banco de dados não encontrdo");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    switch (databaseProvider)
+    {
+        case DatabaseProviderEnum.SQLite:
+            options.UseSqlite(connectionString, b => b.MigrationsAssembly("ProductAPI.Infrastructure"));
+            break;
+
+        case DatabaseProviderEnum.PostgreSQL:
+            options.UseNpgsql(connectionString, b => b.MigrationsAssembly("ProductAPI.Infrastructure"));
+            break;
+        default:
+            throw new InvalidOperationException("Provedor de banco de dados não encontrado");
+    }
+});
+
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
@@ -43,6 +71,29 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+// Create Migration
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    switch (databaseProvider)
+    {
+        case DatabaseProviderEnum.SQLite:
+            context.Database.Migrate();
+            break;
+        case DatabaseProviderEnum.PostgreSQL:
+            context.Database.Migrate();
+            break;
+        case DatabaseProviderEnum.SqlServer:
+            break;
+        case DatabaseProviderEnum.Mysql:
+            break;
+        default:
+            break;
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {
